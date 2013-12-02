@@ -1,4 +1,10 @@
-(function ($) {
+/**
+ * @file
+ * Attaches behaviors for the UserVoice module widget.
+ */
+
+(function ($, Backbone, Drupal, document) {
+
   Drupal.behaviors.UserVoice = {
     attach: function (context, settings) {
       // Include the UserVoice JavaScript SDK (only needed once on a page)
@@ -47,4 +53,4 @@
       UserVoice.push(['autoprompt', {}]);
     }
   };
-})(jQuery);
+})(jQuery, Backbone, Drupal, document);

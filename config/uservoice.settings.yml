@@ -1,0 +1,8 @@
+api_key: NULL
+accent_color: '#448dd6'
+trigger_color: '#ffffff'
+trigger_background_color: 'rgba(46, 49, 51, 0.6)'
+trigger_style: 'icon'
+trigger_position: 'bottom-right'
+mode: 'contact'
+locale: 'en'

@@ -1,21 +1,13 @@
 <?php
 
 /**
- * Implementation of hook_menu for settings page
+ * Implements hook_menu().
  */
 function uservoice_menu() {
-  $items = array();
-
   $items['admin/config/uservoice'] = array(
-    'title' => 'UserVoice settings',
-    'description' => 'Administer UserVoice settings',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('uservoice_settings'),
-    'access arguments' => array('administer site configuration'),
-    'file' => 'uservoice.admin.inc',
-    'type' => MENU_NORMAL_ITEM,
+    'title' => 'Uservoice Configuration',
+    'route_name' => 'uservoice.settings_form',
   );
-
   return $items;
 }
 
@@ -27,20 +19,22 @@ function uservoice_page_build(&$page) {
     return FALSE;
   }
 
-  if (!variable_get('uservoice_api_key')) {
+  $config = \Drupal::config('uservoice.settings');
+
+  if (!$config->get('api_key')) {
     drupal_set_message(t('UserVoice setup is not complete. Go to !configureLink and add your API Key.', array('!configureLink' => l('the settings page', 'admin/config/uservoice'))), 'error');
     return;
   }
 
   $uservoice_settings = array(
-    'api_key'                  => variable_get('uservoice_api_key'),
-    'accent_color'             => variable_get('uservoice_accent_color'),
-    'trigger_color'            => variable_get('uservoice_trigger_color'),
-    'trigger_background_color' => variable_get('uservoice_trigger_background_color'),
-    'trigger_style'            => variable_get('uservoice_trigger_style'),
-    'trigger_position'         => variable_get('uservoice_trigger_position'),
-    'mode'                     => variable_get('uservoice_mode'),
-    'locale'                   => drupal_strtolower(variable_get('uservoice_locale')),
+    'api_key'                  => $config->get('api_key'),
+    'accent_color'             => $config->get('accent_color'),
+    'trigger_color'            => $config->get('trigger_color'),
+    'trigger_background_color' => $config->get('trigger_background_color'),
+    'trigger_style'            => $config->get('trigger_style'),
+    'trigger_position'         => $config->get('trigger_position'),
+    'mode'                     => $config->get('mode'),
+    'locale'                   => $config->get('locale'),
   );
 
   $path = drupal_get_path('module', 'uservoice');

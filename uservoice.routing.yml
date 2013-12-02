@@ -1,0 +1,6 @@
+uservoice.settings_form:
+  path: '/admin/config/uservoice'
+  defaults:
+    _form: 'Drupal\uservoice\Form\UservoiceConfigForm'
+  requirements:
+    _permission: 'administer site configuration'
