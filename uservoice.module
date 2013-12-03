@@ -36,8 +36,25 @@ function uservoice_page_build(&$page) {
     'mode'                     => $config->get('mode'),
     'locale'                   => $config->get('locale'),
   );
-
-  $path = drupal_get_path('module', 'uservoice');
-  drupal_add_js($path . '/js/uservoice.js');
   drupal_add_js(array('UserVoice' => $uservoice_settings), 'setting');
+  drupal_add_library('uservoice', 'uservoice');
+}
+
+/**
+ * Implements hook_library_info().
+ */
+function uservoice_library_info() {
+  $libraries['uservoice'] = array(
+    'title' => 'Uservoice',
+    'version' => \Drupal::VERSION,
+    'js' => array(
+      drupal_get_path('module', 'uservoice') . '/js/uservoice.js' => array(),
+    ),
+    'dependencies' => array(
+      array('system', 'jquery'),
+      array('system', 'drupal'),
+    ),
+  );
+
+  return $libraries;
 }
