@@ -1,5 +1,5 @@
 uservoice.settings_form:
-  path: '/admin/config/uservoice'
+  path: '/admin/config/user-interface/uservoice'
   defaults:
     _form: 'Drupal\uservoice\Form\UservoiceConfigForm'
   requirements:

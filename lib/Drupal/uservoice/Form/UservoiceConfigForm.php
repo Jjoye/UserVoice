@@ -122,7 +122,7 @@ class uservoiceConfigForm extends ConfigFormBase {
        ),
       '#default_value' => $trigger_style_default_value,
       '#ajax' => array(
-        'callback' => 'uservoiceTriggerStyleCallback',
+        'callback' => array($this, 'uservoiceTriggerStyleCallback'),
         'wrapper' => 'trigger-position-div',
         'method' => 'replace'
       )
@@ -180,7 +180,7 @@ class uservoiceConfigForm extends ConfigFormBase {
     parent::submitForm($form, $form_state);
   }
 
-  public function uservoiceTriggerStyleCallback(array &$form, array &$form_state) {
-    return $form['customization']['uservoice_trigger_position'];
+  public function uservoiceTriggerStyleCallback(array $form, array &$form_state) {
+    return $form['customization']['trigger_position'];
   }
 }

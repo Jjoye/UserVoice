@@ -4,9 +4,10 @@
  * Implements hook_menu().
  */
 function uservoice_menu() {
-  $items['admin/config/uservoice'] = array(
-    'title' => 'Uservoice Configuration',
+  $items['admin/config/user-interface/uservoice'] = array(
+    'title' => 'Uservoice',
     'route_name' => 'uservoice.settings_form',
+    'description' => 'Settings for Uservoice widget',
   );
   return $items;
 }
@@ -22,7 +23,7 @@ function uservoice_page_build(&$page) {
   $config = \Drupal::config('uservoice.settings');
 
   if (!$config->get('api_key')) {
-    drupal_set_message(t('UserVoice setup is not complete. Go to !configureLink and add your API Key.', array('!configureLink' => l('the settings page', 'admin/config/uservoice'))), 'error');
+    drupal_set_message(t('UserVoice setup is not complete. Go to !configureLink and add your API Key.', array('!configureLink' => l('the settings page', 'admin/config/user-interface/uservoice'))), 'error');
     return;
   }
 
