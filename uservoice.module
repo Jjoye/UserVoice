@@ -16,7 +16,7 @@ function uservoice_menu() {
  * Implementation of hook_page_build
  */
 function uservoice_page_build(&$page) {
-  if (arg(0) == 'admin') {
+  if (path_is_admin(current_path())) {
     return FALSE;
   }
 
