@@ -3,15 +3,33 @@
  * Attaches behaviors for the UserVoice module widget.
  */
 
-(function ($, Backbone, Drupal, document) {
+(function ($, Drupal, document) {
+
+  Drupal.userVoice = Drupal.userVoice || {};
+
+  /**
+   * Include the UserVoice JavaScript SDK
+   * (only needed once on a page)
+   * UserVoice Javascript SDK developer documentation:
+   * https://www.UserVoice.com/o/javascript-sdk
+   */
+  Drupal.userVoice.include_sdk = function(api_key) {
+    UserVoice = window.UserVoice||[];
+    (function(){
+      var uv=document.createElement('script');
+      uv.type='text/javascript';
+      uv.async=true;
+      uv.src='//widget.UserVoice.com/'+api_key+'.js';
+      var s=document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(uv,s);
+    })();
+  };
 
   Drupal.behaviors.UserVoice = {
     attach: function (context, settings) {
-      // Include the UserVoice JavaScript SDK (only needed once on a page)
-      UserVoice=window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.UserVoice.com/'+settings.UserVoice.api_key+'.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
-
-      // UserVoice Javascript SDK developer documentation:
-      // https://www.UserVoice.com/o/javascript-sdk
+      if (typeof (UserVoice) === "undefined") {
+        Drupal.userVoice.include_sdk(settings.UserVoice.api_key);
+      }
 
       // Set colors
       UserVoice.push(['set', {
@@ -47,10 +65,11 @@
       }]);
 
       // Or, use your own custom trigger:
-      //UserVoice.push(['addTrigger', '#id', { mode: 'contact' }]);
+      // UserVoice.push(['addTrigger', '#id', { mode: 'contact' }]);
 
       // Autoprompt for Satisfaction and SmartVote (only displayed under certain conditions)
       UserVoice.push(['autoprompt', {}]);
     }
   };
-})(jQuery, Backbone, Drupal, document);
+
+})(jQuery, Drupal, document);
