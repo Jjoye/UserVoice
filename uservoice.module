@@ -4,7 +4,7 @@
  * Implementation of hook_page_build
  */
 function uservoice_page_build(&$page) {
-  if (path_is_admin(current_path())) {
+  if (\Drupal::service('router.admin_context')->isAdminRoute()) {
     return FALSE;
   }
 
