@@ -1,0 +1,4 @@
+uservoice.settings:
+  title: Uservoice
+  description: 'Settings for Uservoice widget'
+  route_name: uservoice.settings_form

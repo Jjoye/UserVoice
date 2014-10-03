@@ -1,0 +1,8 @@
+uservoice:
+  title: 'Uservoice'
+  version: VERSION
+  js:
+    misc/uservoice/js/uservoice.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery

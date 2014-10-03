@@ -2,32 +2,40 @@
 
 /**
  * @file
- * Contains \Drupal\uservoice\Form\UservoiceConfigForm.
+ * Contains \Drupal\uservoice\Form\SettingsForm.
  */
 
 namespace Drupal\uservoice\Form;
 
-use Drupal\Core\Config\ConfigFactory;
-use Drupal\Core\Config\Context\ContextInterface;
-use Drupal\Core\Language\LanguageManager;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Language\LanguageManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure text display settings for this the uservoice world page.
  */
-class uservoiceConfigForm extends ConfigFormBase {
+class SettingsForm extends ConfigFormBase {
 
   /**
-   * Constructs a \Drupal\uservoice\Form\UservoiceConfigForm object.
+   * Constructs a \Drupal\aggregator\SettingsForm object.
    *
-   * @param \Drupal\Core\Config\ConfigFactory $config_factory
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The factory for configuration objects.
-   * @param \Drupal\Core\Config\Context\ContextInterface $context
-   *   The configuration context to use.
+   * @param \Drupal\Core\Language\LanguageManager $language_manager
+   *   The Core Language manager.
    */
-  public function __construct(ConfigFactory $config_factory, ContextInterface $context) {
-    parent::__construct($config_factory, $context);
+  public function __construct(ConfigFactoryInterface $config_factory, LanguageManager $language_manager) {
+    parent::__construct($config_factory);
+    $this->language_manager = $language_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFormId() {
+    return 'uservoice_settings_form';
   }
 
   /**
@@ -36,22 +44,15 @@ class uservoiceConfigForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
-      $container->get('config.context.free')
+      $container->get('language_manager')
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getFormID() {
-    return 'uservoice.settings_form';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function buildForm(array $form, array &$form_state) {
-    $config = $this->configFactory->get('uservoice.settings');
+  public function buildForm(array $form, FormStateInterface $form_state) {
+    $config = $this->config('uservoice.settings');
 
     $trigger_style_default_value = $config->get('trigger_style');
 
@@ -73,7 +74,7 @@ class uservoiceConfigForm extends ConfigFormBase {
       '#default_value' => $config->get('mode'),
     );
     $select_options = array();
-    $standard_languages = LanguageManager::getStandardLanguageList();
+    $standard_languages = $this->language_manager->getStandardLanguageList();
     foreach ($standard_languages as $langcode => $language_names) {
       $select_options[$langcode] = $language_names[0];
     }
@@ -130,8 +131,8 @@ class uservoiceConfigForm extends ConfigFormBase {
 
     $trigger_style_value = $trigger_style_default_value;
 
-    if (isset($form_state['values']) && isset($form_state['values']['trigger_style'])) {
-      $trigger_style_value = $form_state['values']['trigger_style'];
+    if ($form_state->hasValue('trigger_style')) {
+      $trigger_style_value = $form_state->getValue('trigger_style');
     }
 
     $trigger_position_options = array(
@@ -163,10 +164,10 @@ class uservoiceConfigForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, array &$form_state) {
-    $values = $form_state['values'];
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $values = $form_state->getValues();
 
-    $this->configFactory->get('uservoice.settings')
+    $this->config('uservoice.settings')
       ->set('api_key', $values['api_key'])
       ->set('mode', $values['mode'])
       ->set('locale', $values['locale'])

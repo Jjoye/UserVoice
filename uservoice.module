@@ -1,18 +1,6 @@
 <?php
 
 /**
- * Implements hook_menu().
- */
-function uservoice_menu() {
-  $items['admin/config/user-interface/uservoice'] = array(
-    'title' => 'Uservoice',
-    'route_name' => 'uservoice.settings_form',
-    'description' => 'Settings for Uservoice widget',
-  );
-  return $items;
-}
-
-/**
  * Implementation of hook_page_build
  */
 function uservoice_page_build(&$page) {
@@ -23,7 +11,7 @@ function uservoice_page_build(&$page) {
   $config = \Drupal::config('uservoice.settings');
 
   if (!$config->get('api_key')) {
-    drupal_set_message(t('UserVoice setup is not complete. Go to !configureLink and add your API Key.', array('!configureLink' => l('the settings page', 'admin/config/user-interface/uservoice'))), 'error');
+    drupal_set_message(t('UserVoice setup is not complete. Go to !configureLink and add your API Key.', array('!configureLink' => Drupal::l('the settings page', 'admin/config/user-interface/uservoice'))), 'error');
     return;
   }
 
@@ -37,25 +25,10 @@ function uservoice_page_build(&$page) {
     'mode'                     => $config->get('mode'),
     'locale'                   => $config->get('locale'),
   );
-  drupal_add_js(array('UserVoice' => $uservoice_settings), 'setting');
-  drupal_add_library('uservoice', 'uservoice');
-}
-
-/**
- * Implements hook_library_info().
- */
-function uservoice_library_info() {
-  $libraries['uservoice'] = array(
-    'title' => 'Uservoice',
-    'version' => \Drupal::VERSION,
-    'js' => array(
-      drupal_get_path('module', 'uservoice') . '/js/uservoice.js' => array(),
-    ),
-    'dependencies' => array(
-      array('system', 'jquery'),
-      array('system', 'drupal'),
-    ),
+  $page['#attached']['library'][] = 'uservoice/uservoice';
+  $page['#attached']['js'][] = array(
+    'type' => 'setting',
+    'data' => array('UserVoice' => $uservoice_settings),
   );
 
-  return $libraries;
 }

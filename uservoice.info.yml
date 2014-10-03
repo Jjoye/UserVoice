@@ -3,4 +3,4 @@ core: 8.x
 type: module
 description: 'Provides an easy way to integrate and customize your UserVoice widgets.'
 package: Custom
-version: VERSION
+configure: admin/config/user-interface/uservoice
