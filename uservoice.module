@@ -17,11 +17,11 @@ function uservoice_page_build(&$page) {
 
   $uservoice_settings = array(
     'api_key'                  => $config->get('api_key'),
-    'accent_color'             => $config->get('accent_color'),
-    'trigger_color'            => $config->get('trigger_color'),
-    'trigger_background_color' => $config->get('trigger_background_color'),
-    'trigger_style'            => $config->get('trigger_style'),
-    'trigger_position'         => $config->get('trigger_position'),
+    'accent_color'             => $config->get('accent.color'),
+    'trigger_color'            => $config->get('trigger.color'),
+    'trigger_background_color' => $config->get('trigger.background_color'),
+    'trigger_style'            => $config->get('trigger.style'),
+    'trigger_position'         => $config->get('trigger.position'),
     'mode'                     => $config->get('mode'),
     'locale'                   => $config->get('locale'),
   );

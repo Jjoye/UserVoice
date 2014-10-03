@@ -52,9 +52,9 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('uservoice.settings');
+    $config = $this->configFactory->get('uservoice.settings');
 
-    $trigger_style_default_value = $config->get('trigger_style');
+    $trigger_style_default_value = $config->get('trigger.style');
 
     $form['api_key'] = array(
       '#type' => 'textfield',
@@ -97,21 +97,21 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => t('Accent color'),
       '#description' => t('Ex: rgba(68, 141, 214, 0.6), #448dd6, blue'),
-      '#default_value' => $config->get('accent_color'),
+      '#default_value' => $config->get('accent.color'),
     );
 
     $form['customization']['trigger_color'] = array(
       '#type' => 'textfield',
       '#title' => t('Trigger color'),
       '#description' => t('Ex: rgba(255, 255, 255, 1), #ffffff, white'),
-      '#default_value' => $config->get('trigger_color'),
+      '#default_value' => $config->get('trigger.color'),
     );
 
     $form['customization']['trigger_background_color'] = array(
       '#type' => 'textfield',
       '#title' => t('Trigger background color'),
       '#description' => t('Ex: rgba(46, 49, 51, 0.6), #2e3133, grey'),
-      '#default_value' => $config->get('trigger_background_color'),
+      '#default_value' => $config->get('trigger.background_color'),
     );
 
     $form['customization']['trigger_style'] = array(
@@ -171,17 +171,17 @@ class SettingsForm extends ConfigFormBase {
       ->set('api_key', $values['api_key'])
       ->set('mode', $values['mode'])
       ->set('locale', $values['locale'])
-      ->set('accent_color', $values['accent_color'])
-      ->set('trigger_color', $values['trigger_color'])
-      ->set('trigger_background_color', $values['trigger_background_color'])
-      ->set('trigger_style', $values['trigger_style'])
-      ->set('trigger_position', $values['trigger_position'])
+      ->set('accent.color', $values['accent_color'])
+      ->set('trigger.color', $values['trigger_color'])
+      ->set('trigger.background_color', $values['trigger_background_color'])
+      ->set('trigger.style', $values['trigger_style'])
+      ->set('trigger.position', $values['trigger_position'])
       ->save();
 
     parent::submitForm($form, $form_state);
   }
 
-  public function uservoiceTriggerStyleCallback(array $form, array &$form_state) {
+  public function uservoiceTriggerStyleCallback(array $form, FormStateInterface $form_state) {
     return $form['customization']['trigger_position'];
   }
 }
