@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\Core\Url;
+
 /**
  * Implementation of hook_page_build
  */
@@ -11,7 +13,7 @@ function uservoice_page_build(&$page) {
   $config = \Drupal::config('uservoice.settings');
 
   if (!$config->get('api_key')) {
-    drupal_set_message(t('UserVoice setup is not complete. Go to !configureLink and add your API Key.', array('!configureLink' => Drupal::l('the settings page', 'admin/config/user-interface/uservoice'))), 'error');
+    drupal_set_message(t('UserVoice setup is not complete. Go to !configureLink and add your API Key.', array('!configureLink' => Drupal::l('the settings page', Url::fromRoute('uservoice.settings_form')))), 'error');
     return;
   }
 
